@@ -1,0 +1,26 @@
+<?php
+
+/**
+ *
+ * @package HoJa_SubNav
+ * @link    https://contao.org
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
+ */
+
+
+/**
+ * Register the classes
+ */
+ClassLoader::addClasses(array
+(
+	'HoJa\SubNav\ModuleHoJaSubNav' => 'system/modules/hoja_mod_subnav/modules/ModuleHoJaSubNav.php'
+));
+
+
+/**
+ * Register the templates
+ */
+TemplateLoader::addFiles(array
+(
+	'nav_hoja_subnav' => 'system/modules/hoja_subnav/templates',
+));
