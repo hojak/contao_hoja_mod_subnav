@@ -15,8 +15,8 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['hoja_mod_subnav']
 	= "{title_legend},name,headline,type;{nav_legend},pages;{display_legend},noLevels;"
 	."{columns_legend},columnType;{expert_legend:hide},guests,cssID,space;";
 	 
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['columnType_manual'] = "manualBreaks";
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['columnType_balanced'] = "noColumns";
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['columnType_manual'] = "columnsAtLevel,manualBreaks";
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['columnType_balanced'] = "columnsAtLevel,noColumns";
  
 $GLOBALS['TL_DCA']['tl_module']['fields']['noLevels'] = array (
 	"label" => &$GLOBALS['TL_LANG']['tl_module']['noLevels'],
@@ -55,6 +55,14 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['noColumns'] = array (
 	"sql" => "smallint(5) unsigned NOT NULL default '1'"
 );
 
+$GLOBALS['TL_DCA']['tl_module']['fields']['columnsAtLevel'] = array (
+	"label" => &$GLOBALS['TL_LANG']['tl_module']['columnsAtLevel'],
+	"exclude" => true,
+	"inputType" => "text",
+	"eval" => array('maxlength'=>5, 'rgxp'=>'digit', 'tl_class'=>''),
+	"sql" => "smallint(5) unsigned NOT NULL default '0'"
+);
+
 $GLOBALS['TL_DCA']['tl_module']['fields']['manualBreaks'] = array (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['manualBreaks'],
 	'exclude'                 => true,
@@ -63,8 +71,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['manualBreaks'] = array (
 	'eval'                    => array('multiple'=>true, 'fieldType'=>'checkbox', 'files'=>true, 'mandatory'=>false, 'tl_class'=>''),
 	'sql'                     => "blob NULL",
 	'relation'                => array('type'=>'hasMany', 'load'=>'lazy')
-
-
 );
 
 

@@ -10,6 +10,7 @@
 
 $GLOBALS['TL_LANG']['tl_module']['useColumns'] = array ("Blockaufteilung","Soll das Navigationsmenü in Blöcoe (Spalten) aufgeteilt werden?");
 $GLOBALS['TL_LANG']['tl_module']['noColumns'] = array ("Anzahl Spalten","Auf wie viele Spalten soll die Navigation aufgeteilt werden?");
+$GLOBALS['TL_LANG']['tl_module']['columnsAtLevel'] = array ("Spalten-Ebene","Auf welcher Ebene sollen die Spalten verwendet werden?");
 $GLOBALS['TL_LANG']['tl_module']['breakColumns'] = array ("Spaltenumbruch","Dürfen Spalten innerhalb eines Hauptpunktes umgebrochen werden?");
 $GLOBALS['TL_LANG']['tl_module']['noLevels'] = array ("Anzahl Ebenenen","Wie viele Ebenen unterhalb der Auswahl sollen angezeigt werden?");
 $GLOBALS['TL_LANG']['tl_module']['manualBreaks'] = array ("Manuelle Umbrüche", "Wählen Sie Seiten, vor denen eine neue Spalte in der Navigation angefangen werden soll!");

@@ -89,22 +89,26 @@ class ModuleHoJaSubNav extends \Module
 		$this->Template->level = 'level_1';
 		
 		
-		switch ( $this->columnType ) {
-			case 'manual':
-				$this->Template->navi_menu = $this->renderManualColumns ( $selectedItems );
-				break;
-			case 'balanced':
-				$this->Template->navi_menu = $this->renderBalancedColumns ( $selectedItems );
-				break;
-			default:
-				$this->Template->navi_menu = $this->renderNormal ( $selectedItems );
-		}
-		
+		$this->Template->navi_menu = $this->renderRecursive ( $selectedItems );
 	}
 	
 	
 	
+	protected function renderRecursive ( $items, $current_level = 0 ) {
+		if ( $this->columnType == "manual" && $current_level >= $this->columnsAtLevel )
+			return $this->renderManualColumns ( $items, $current_level );
+		elseif ( $this->columnType == "balanced" && $current_level >= $this->columnsAtLevel )
+			return $this->renderBalancedColumns ( $items, $current_level);
+		else
+			return $this->renderNormal ( $items, $current_level );
+	}
+			
 	
+	
+	/**
+	 * render a hierarchical ul list of navigation items.
+	 * If columns are used, stop hierarchy at the level for the columns (columnsAtLevel).
+	 */
 	protected function renderNormal ( $pageObjects, $level = 0, $class = "" ) {
 		$objTemplate = new \FrontendTemplate( $this->strElementTemplate );
 		$objTemplate->type = get_class($this);
@@ -114,7 +118,6 @@ class ModuleHoJaSubNav extends \Module
 		
 		if ( $class )
 			$objTemplate->hoja_ul_class .= " " . $class;
-		
 		
 		$items = array ();
 		foreach ( $pageObjects as $obj ) {
@@ -126,7 +129,7 @@ class ModuleHoJaSubNav extends \Module
 				$subpages = $this->getSubPages ( $data['id']);
 							
 				if ( $subpages ) {
-					$data['subitems'] = $this->renderNormal ( $subpages, $level +1 );
+					$data['subitems'] = $this->renderRecursive ( $subpages, $level +1 );
 				}
 			}
 			
@@ -138,12 +141,16 @@ class ModuleHoJaSubNav extends \Module
 	}
 	
 	
-	
-	protected function renderBalancedColumns ( $pageRows ) 
+	/**
+	 * render automatically balanced columns of navigation items.
+	 * the hierarchy of the navigation is only represented in css classes
+	 * of the li-items for each navigation entry.
+	 */
+	protected function renderBalancedColumns ( $pageRows, $level ) 
 	{
 		$flatData = array ();
 		foreach ( $pageRows as $row )
-			$this->loadFlatNodeData ( $flatData, $row );
+			$this->loadFlatNodeData ( $flatData, $row, $level );
 	
 		$size = sizeof ( $flatData );;			
 		$max_col_size = ceil ( $size / $this->noColumns );
@@ -176,13 +183,19 @@ class ModuleHoJaSubNav extends \Module
 	}
 
 	
-	protected function renderManualColumns ( $pageRows ) 
+	/**
+	 * render a list of navigation items divided into columns by manually 
+	 * selected break items.
+	 * The hierarchy of the navigation is only represented by a css class
+	 * of the corresponding li items.
+	 */
+	protected function renderManualColumns ( $pageRows, $level ) 
 	{
 		$breaks = deserialize($this->manualBreaks, true);
 		
 		$flatData = array ();
 		foreach ( $pageRows as $row )
-			$this->loadFlatNodeData ( $flatData, $row );
+			$this->loadFlatNodeData ( $flatData, $row, $level );
 	
 		$size = sizeof ( $flatData );;			
 		$max_col_size = ceil ( $size / $this->noColumns );
@@ -204,8 +217,10 @@ class ModuleHoJaSubNav extends \Module
 	}
 	
 	
-	
-	protected function loadFlatNodeData ( &$flatData,  $datarow, $level = 0 ) {
+	/**
+	 * load all navigation data into a flat array
+	 */
+	protected function loadFlatNodeData ( &$flatData, $datarow, $level = 0 ) {
 		$datarow ['hoja_level'] = $level;
 		$flatData[] = $datarow;
 		
@@ -215,7 +230,7 @@ class ModuleHoJaSubNav extends \Module
 		}
 	}
 	
-	
+	/**
 	protected function renderColumns ( $pageObjects ) {
 		$tree = array ();
 		foreach ( $pageObjects as $row ) $tree[] = $this->createNavTreeNode ( $row);
@@ -248,9 +263,12 @@ class ModuleHoJaSubNav extends \Module
 			
 		return $result;
 	}
+	*/
 	
 	
-	
+	/**
+	 * render a list of navigation items into a ul node
+	 */
 	protected function renderColumn ( $item_data ) {
 		$objTemplate = new \FrontendTemplate( $this->strElementTemplate );
 		$objTemplate->type = get_class($this);
@@ -271,6 +289,7 @@ class ModuleHoJaSubNav extends \Module
 	}
 	
 	
+	/*
 	protected function createNavTreeNode ( $row, $level = 0 ) {
 		$result = array( 
 			'data' => $row,
@@ -290,10 +309,11 @@ class ModuleHoJaSubNav extends \Module
 		
 		return $result;
 	}
+	*/
 	
 	
 	
-	
+	/*
 	protected function prepareColumns ( $tree ) {
 		$count = sizeof ( $this->flatData );
 		$max_size = ceil ( $count / $this->noColumns * 1.5) ;
@@ -323,10 +343,13 @@ class ModuleHoJaSubNav extends \Module
 		
 		return $columns;
 	}
-	
+	*/
 
 	
-	
+	/**
+	 * (from standard Navigation)
+	 * prepare the data for rendering a single li navigation node
+	 */
 	protected function prepareNode ( $rowdata ) {
 		global $objPage;
 
@@ -418,7 +441,9 @@ class ModuleHoJaSubNav extends \Module
 	}
 	
 	
-	
+	/**
+	 * get all (currently accessible) subpages of the page given by its id
+	 */
 	protected function getSubPages ( $id ) {
 		$objSubpages = \PageModel::findPublishedSubpagesWithoutGuestsByPid(
 			$id, false, $this instanceof \ModuleSitemap);
