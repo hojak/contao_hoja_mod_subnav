@@ -7,7 +7,7 @@
  * @copyright Holger Janßen, 2014
  */
 
-
+$GLOBALS['TL_LANG']['tl_module']['hoja_module_template'] = array ("Modul-Template", "Welches Template soll zum rendern des Moduls (als ganzes) verwendet werden?");
 $GLOBALS['TL_LANG']['tl_module']['useColumns'] = array ("Blockaufteilung","Soll das Navigationsmenü in Blöcoe (Spalten) aufgeteilt werden?");
 $GLOBALS['TL_LANG']['tl_module']['noColumns'] = array ("Anzahl Spalten","Auf wie viele Spalten soll die Navigation aufgeteilt werden?");
 $GLOBALS['TL_LANG']['tl_module']['columnsAtLevel'] = array ("Spalten-Ebene","Auf welcher Ebene sollen die Spalten verwendet werden?");

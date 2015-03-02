@@ -8,6 +8,7 @@
  */
 
 
+$GLOBALS['TL_LANG']['tl_module']['hoja_module_template'] = array ("template for the module", "Which template should be used to render the complete contents of this module?");
 $GLOBALS['TL_LANG']['tl_module']['useColumns'] = array ("separation in blocks / columns","Is the navigation menu to be divided into blocks / columns?");
 $GLOBALS['TL_LANG']['tl_module']['noColumns'] = array ("Columns","How many columns should be used for the navigation menu.");
 $GLOBALS['TL_LANG']['tl_module']['breakColumns'] = array ("break menus","May column breaks occus within a main item?");

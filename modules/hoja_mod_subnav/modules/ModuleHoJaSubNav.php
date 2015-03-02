@@ -51,6 +51,9 @@ class ModuleHoJaSubNav extends \Module
 				return '';
 		}
 
+		if ( $this->hoja_module_template) 
+			$this->strTemplate = $this->hoja_module_template;
+
 
 		$strBuffer = parent::generate();
 		
@@ -130,6 +133,9 @@ class ModuleHoJaSubNav extends \Module
 							
 				if ( $subpages ) {
 					$data['subitems'] = $this->renderRecursive ( $subpages, $level +1 );
+					if ( @$data['class'] ) 
+						$data['class'] .= " ";
+					$data['class'] .= "hassubs";
 				}
 			}
 			
@@ -177,7 +183,7 @@ class ModuleHoJaSubNav extends \Module
 		
 		$result = "";
 		for ( $i=0; $i<sizeof ( $columns); $i++)
-			$result .= $this->renderColumn ( $columns[$i]);
+			$result .= $this->renderColumn ( $columns[$i], $level);
 	
 		return $result;
 	}
@@ -211,7 +217,7 @@ class ModuleHoJaSubNav extends \Module
 					
 		$result = "";
 		for ( $i=0; $i<sizeof ( $columns); $i++)
-			$result .= $this->renderColumn ( $columns[$i]);
+			$result .= $this->renderColumn ( $columns[$i], $level);
 	
 		return $result;
 	}
@@ -269,7 +275,7 @@ class ModuleHoJaSubNav extends \Module
 	/**
 	 * render a list of navigation items into a ul node
 	 */
-	protected function renderColumn ( $item_data ) {
+	protected function renderColumn ( $item_data, $level ) {
 		$objTemplate = new \FrontendTemplate( $this->strElementTemplate );
 		$objTemplate->type = get_class($this);
 		$objTemplate->cssID = $this->cssID; // see #4897

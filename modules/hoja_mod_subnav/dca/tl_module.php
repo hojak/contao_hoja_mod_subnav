@@ -12,7 +12,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'columnType';
 
  
 $GLOBALS['TL_DCA']['tl_module']['palettes']['hoja_mod_subnav'] 
-	= "{title_legend},name,headline,type;{nav_legend},pages;{display_legend},noLevels;"
+	= "{title_legend},name,headline,type;{nav_legend},pages;{template_legend:hide},hoja_module_template;{display_legend},noLevels;"
 	."{columns_legend},columnType;{expert_legend:hide},guests,cssID,space;";
 	 
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['columnType_manual'] = "columnsAtLevel,manualBreaks";
@@ -26,6 +26,15 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['noLevels'] = array (
 	"sql" => "smallint(5) unsigned NOT NULL default '1'"
 );
 
+$GLOBALS['TL_DCA']['tl_module']['fields']['hoja_module_template'] = array (
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['hoja_module_template'],
+	'default'                 => 'mod_hoja_subnav',
+	'exclude'                 => true,
+	'inputType'               => 'select',
+	'options_callback'        => array('tl_hoja_subnav_module', 'getHojaTemplates'),
+	'sql'                     => "varchar(32) NOT NULL default ''"
+
+);
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['columnType'] = array (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['columnType'],
@@ -35,6 +44,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['columnType'] = array (
 	'eval'                    => array('mandatory'=>true, 'maxlength'=>10, "submitOnChange" => true),
 	'sql'                     => "varchar(10) NOT NULL default ''"
 );
+
+
 
 
 /*
@@ -72,5 +83,20 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['manualBreaks'] = array (
 	'sql'                     => "blob NULL",
 	'relation'                => array('type'=>'hasMany', 'load'=>'lazy')
 );
+
+
+
+
+class tl_hoja_subnav_module extends Backend {
+
+	/**
+ 	 * Return all hoja module templates as array 
+	 * @return array
+	 */
+	public function getHojaTemplates () {
+		return $this->getTemplateGroup ("mod_hoja_");
+	}	
+
+}
 
 
